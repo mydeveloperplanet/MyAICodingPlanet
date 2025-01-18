@@ -1,0 +1,64 @@
+@startuml
+
+!define RECTANGLE class
+
+title Database Schema - Information Engineering Diagram
+
+package "Database" {
+  RECTANGLE "vets" as VETS {
+    * id : INT (PK)
+    first_name : TEXT
+    last_name : TEXT
+  }
+
+  RECTANGLE "specialties" as SPECIALTIES {
+    * id : INT (PK)
+    name : TEXT
+  }
+
+  RECTANGLE "vet_specialties" as VET_SPECIALTIES {
+    * vet_id : INT (FK)
+    * specialty_id : INT (FK)
+  }
+
+  RECTANGLE "types" as TYPES {
+    * id : INT (PK)
+    name : TEXT
+  }
+
+  RECTANGLE "owners" as OWNERS {
+    * id : INT (PK)
+    first_name : TEXT
+    last_name : TEXT
+    address : TEXT
+    city : TEXT
+    telephone : TEXT
+  }
+
+  RECTANGLE "pets" as PETS {
+    * id : INT (PK)
+    name : TEXT
+    birth_date : DATE
+    type_id : INT (FK)
+    owner_id : INT (FK)
+  }
+
+  RECTANGLE "visits" as VISITS {
+    * id : INT (PK)
+    pet_id : INT (FK)
+    visit_date : DATE
+    description : TEXT
+  }
+}
+
+VETS --|{ VET_SPECIALTIES : has
+SPECIALTIES --|{ VET_SPECIALTIES : has
+
+TYPES ||..|{ PETS : is a type of
+
+PETS --|{ VISITS : has visit(s)
+PETS --|{ OWNERS : owned by
+
+VISITS --|{ PETS : for pet
+
+@enduml

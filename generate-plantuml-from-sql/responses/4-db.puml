@@ -1,0 +1,67 @@
+@startuml
+skinparam classBorderWidth 2
+skinparam classStrokeColor #666666
+skinparam classBackgroundColor white
+
+class Vets {
+  - id: INT
+  - first_name: TEXT
+  - last_name: TEXT
+}
+
+class Specialties {
+  - id: INT
+  - name: TEXT
+}
+
+class VetSpecialties {
+  - vet_id: INT
+  |o..vet
+  - specialty_id: INT
+  |o..specialty
+}
+
+class Types {
+  - id: INT
+  - name: TEXT
+}
+
+class Owners {
+  - id: INT
+  - first_name: TEXT
+  - last_name: TEXT
+  - address: TEXT
+  - city: TEXT
+  - telephone: TEXT
+}
+
+class Pets {
+  - id: INT
+  - name: TEXT
+  - birth_date: DATE
+  - type_id: INT
+  |o..type
+  - owner_id: INT
+  |o..owner
+}
+
+class Visits {
+  - id: INT
+  - pet_id: INT
+  |o..pet
+  - visit_date: DATE
+  - description: TEXT
+}
+
+Vets --|> VetSpecialties
+VetSpecialties --|> Specialties
+VetSpecialties --|> Vets
+
+Types --|> Pets
+Pets --|> Visits
+Visits --|> Pets
+
+Owners --|> Pets
+Pets --|> Owners
+
+@enduml
