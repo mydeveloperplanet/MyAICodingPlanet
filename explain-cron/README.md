@@ -1,6 +1,6 @@
 # Explain Cron Expression
 
-AI is very helpful in explaining cron expressions. In the example a cron expression for Spring Scheduling will be used.
+AI is very helpful in explaining cron expressions. In the example a cron expression for Spring Scheduling will be used. Important to notice is that Spring Scheduling cron expressions have an additional component to define the seconds. This is different from a regular crontab cron expression.
 
 An example of a cron expression is available in this [file](sources/cron-1.properties)
 
@@ -49,7 +49,7 @@ It is recognized that it is a cron expression, but the explanation is not correc
 ## Prompt
 Let's give the LLM a bit more context.
 
-Enter the prompt.
+Remain in the same chat window and enter the prompt.
 ```text
 explain the selected Spring Scheduling cron expression
 ```
@@ -83,6 +83,6 @@ In summary, this cron expression schedules a task to run at the start of each mi
 ---
 
 ## Response Analysis
-The response is correct, this time. So, by adding the information that it is about a Spring Scheduling cron expression, the LLM was able to explain it correctly.
+The response is correct this time besides the summary. So, by adding the information that it is about a Spring Scheduling cron expression, the LLM was able to explain it correctly.
 
 Always beware that you should provide enough context to the LLM, otherwise responses will not be what you would expect.

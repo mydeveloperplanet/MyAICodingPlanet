@@ -6,7 +6,7 @@ AI can be very helpful in explaining code. Take the [Refactor.java](../refactor-
 LMStudio, qwen2.5-coder, GPU
 
 ## Prompt
-Open the file, add the entire source directory to the Prompt Context.
+Open the file, add the entire source directory to the Prompt Context. Enter the following prompt.
 ```text
 /explain
 ```

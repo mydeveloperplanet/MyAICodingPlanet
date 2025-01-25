@@ -60,7 +60,7 @@ This pattern helps in creating a strong and secure password.
 ## Response Analysis
 The response is correct.
 
-Maybe this was to obvious, let's try with a made up example.
+Maybe this was too obvious, let's try with a made up example.
 
 ## Prompt
 Open a new chat window.

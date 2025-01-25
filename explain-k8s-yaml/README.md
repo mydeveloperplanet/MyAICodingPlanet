@@ -8,7 +8,7 @@ The resources section is something I do not understand very well, especially not
 Ollama, qwen2.5-coder, CPU
 
 ## Prompt
-Open the file and open a new chat window.
+Open the file, select the resources section and open a new chat window. Enter the following prompt.
 ```text
 /explain
 ```
@@ -93,4 +93,4 @@ This should help you understand the memory requirements specified in your code s
 ---
 
 ## Response Analysis
-The response is correct and a good explanation is given what a Mebibyte is.
+The response is correct and the explanation accurately defines a Mebibyte.
