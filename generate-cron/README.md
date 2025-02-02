@@ -68,7 +68,7 @@ This cron expression ensures that the scheduled task runs at 0 AM every 3 days, 
 ---
 
 ## Response Analysis
-Saturday is included now, but still, this cron expression is not correct. The seconds are still missing.
+Saturday is included now, but still, this cron expression is not correct. The seconds are still missing. The summary tells us that the task will also run on Sundays, which is not correct.
 
 ## Prompt
 Last attempt using a CPU, but explicitly mentioning Spring Boot.

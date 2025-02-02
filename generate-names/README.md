@@ -1,4 +1,4 @@
-# Explain Java Code
+# Generate Names
 
 AI can be very helpful with generating names for methods, classes, variables, etc. Take the [Refactor.java](../refactor-code/sources/src/main/java/com/mydeveloperplanet/refactor/Refactor.java) Java class and open it.
 
