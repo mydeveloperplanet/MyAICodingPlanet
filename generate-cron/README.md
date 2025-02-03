@@ -1,4 +1,4 @@
-# Explain Cron Expression
+# Generate Cron Expression
 
 AI is very helpful in explaining cron expressions. But is it able to generate Spring Scheduling cron expressions as well?
 
