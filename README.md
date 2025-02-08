@@ -38,9 +38,9 @@ Two different setups are used, in every README the used setup is mentioned.
 
 [Generate Names](generate-names/README.md)
 
-## Generate Docker Compose file
+## Generate Docker Compose File
 
-[Generate Docker Compose file](generate-docker-compose/README.md)
+[Generate Docker Compose File](generate-docker-compose/README.md)
 
 ## Generate Cron Expression
 

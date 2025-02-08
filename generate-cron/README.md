@@ -3,106 +3,9 @@
 AI is very helpful in explaining cron expressions. But is it able to generate Spring Scheduling cron expressions as well?
 
 ## Setup
-Ollama, qwen2.5-coder, CPU
+LMStudio, qwen2.5-coder, GPU
 
 ## Prompt
-Enter the prompt.
-```text
-generate a spring scheduling cron expression which runs every 3 days at 0 AM, but not on Sundays
-```
-
-## Response
-
----
-
-To generate a Spring Scheduling cron expression that runs every 3 days at 0 AM but not on Sundays, you can use the following expression:
-
-```cron
-0 0 */3 ? * MON-FRI
-```
-
-### Explanation:
-- `0`: This specifies the minute. In this case, it's set to 0, meaning the task will run at the start of every hour.
-- `0`: This specifies the hour. The task will run at 0 AM (midnight).
-- `*/3`: This specifies the day of the month. The task will run every 3 days.
-- `?`: This is a special character that indicates no specific value for the day of the week, allowing the cron expression to be valid even though it includes both day-of-month and day-of-week fields.
-- `*`: This specifies the month. The task will run every month.
-- `MON-FRI`: This specifies the day of the week. The task will not run on Sundays.
-
-This cron expression ensures that the scheduled task runs at 0 AM every 3 days, excluding Sundays.
-
----
-
-## Response Analysis
-The response is not correct:
-* Spring cron expression start with seconds
-* Also Saturdays are excluded, this was not asked
-
-## Prompt
-Let's tell the LLM what was wrong.
-
-Enter the prompt.
-```text
-this looks like a crontab expression, I do need a cron expression for Spring Scheduling and the cron expression also need to run on saturdays, which is now excluded
-```
-
-## Response
-
----
-
-To generate a Spring Scheduling cron expression that runs every 3 days at 0 AM and includes Saturdays, you can use the following expression:
-
-```cron
-0 0 */3 * MON-SAT
-```
-
-### Explanation:
-- `0`: This specifies the minute. In this case, it's set to 0, meaning the task will run at the start of every hour.
-- `0`: This specifies the hour. The task will run at 0 AM (midnight).
-- `*/3`: This specifies the day of the month. The task will run every 3 days.
-- `*`: This specifies the month. The task will run every month.
-- `MON-SAT`: This specifies the day of the week. The task will run on Mondays, Tuesdays, Wednesdays, Thursdays, Fridays, and Saturdays.
-
-This cron expression ensures that the scheduled task runs at 0 AM every 3 days, including both Sundays and Saturdays.
-
----
-
-## Response Analysis
-Saturday is included now, but still, this cron expression is not correct. The seconds are still missing. The summary tells us that the task will also run on Sundays, which is not correct.
-
-## Prompt
-Last attempt using a CPU, but explicitly mentioning Spring Boot.
-
-```text
-is this cron expression valid for spring boot?
-```
-
-## Response
-
----
-
-Yes, the cron expression `0 0 */3 * MON-SAT` is valid for Spring Boot. This expression schedules a task to run at 0 AM every 3 days, including both Sundays and Saturdays.
-
-Here's a breakdown of the cron expression:
-
-- `0`: This specifies the minute. In this case, it's set to 0, meaning the task will run at the start of every hour.
-- `0`: This specifies the hour. The task will run at 0 AM (midnight).
-- `*/3`: This specifies the day of the month. The task will run every 3 days.
-- `*`: This specifies the month. The task will run every month.
-- `MON-SAT`: This specifies the day of the week. The task will run on Mondays, Tuesdays, Wednesdays, Thursdays, Fridays, and Saturdays.
-
-This cron expression ensures that the scheduled task runs at 0 AM every 3 days, including both Sundays and Saturdays.
-
----
-
-## Response Analysis
-It still fails. This is interesting because the LLM was able to explain the cron expression [earlier](../explain-cron/README.md).
-
-To conclude with: the cron expression is correct besides that the seconds are missing.
-
-## Prompt
-Let's try this with a different setup: LMStudio, qwen2.5-coder, GPU
-
 Enter the prompt.
 ```text
 generate a spring scheduling cron expression which runs every 3 days at 0 AM, but not on Sundays
@@ -131,7 +34,7 @@ This cron expression ensures that the task runs every 3 days starting from the n
 ---
 
 ## Response Analysis
-This time the LLM does know how to format a valid Spring Scheduling cron. The cron expression will run always on Monday, Wednesday, Friday and Saturday. That is not what we meant, because when it runs on Friday, it should not run on Saturday.
+The LLM does know how to format a valid Spring Scheduling cron expression. The cron expression will run always on Monday, Wednesday, Friday and Saturday. That is not what we meant, because when it runs on Friday, it should not run on Saturday.
 
 ## Prompt
 Write a follow-up prompt.
@@ -164,4 +67,37 @@ This cron expression ensures that the task runs every 3 days starting from the n
 ## Response Analysis
 No real improvement, the expression has changed in such a way that it now runs every three hours. The explanation the LLM gives, does not correspond to this new cron expression.
 
-Using a GPU improves the results compared to using a CPU, but the end result is not entirely correct.
+## Prompt
+This challenge is quite difficult because it is a tricky one: you want to run it every three days, but not on Sundays. But what to do when the next schedule would run on Sunday? Do you want it to just skip Sunday or do you want it to run the next day (meaning Monday)?
+
+Let's try another prompt indicating that Sundays should be skipped. Create a new chat window in order to start anew.
+```text
+generate a spring scheduling cron expression which runs every 3 days at 0 AM, Sundays should be skipped.
+```
+
+## Response
+
+---
+
+To generate a Spring Scheduling cron expression that runs every 3 days at 0 AM and skips Sundays, you can use the following expression:
+
+```cron
+0 0 0 ? * MON,WED,FRI
+```
+
+This cron expression breaks down as follows:
+- `0` seconds
+- `0` minutes
+- `0` hours (midnight)
+- `?` day of the month (no specific day, use `?`)
+- `*` month (every month)
+- `MON,WED,FRI` days of the week (Monday, Wednesday, and Friday)
+
+This ensures that the task runs every 3 days starting from a Monday.
+
+---
+
+## Response Analysis
+This response is correct this time. And it also shows the problem it was struggling with: it depends in this case which day you want to start, so the LLM is able to create a cron expression which satisfies the requirements.
+
+The conclusion here is that it does matter which words, phrasing you use in the prompt. And sometimes it is better to start anew with a new prompt instead of iterating on previous responses.
