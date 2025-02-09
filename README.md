@@ -54,6 +54,10 @@ Two different setups are used, in every README the used setup is mentioned.
 
 [Generate PlantUML from SQL](generate-plantuml-from-sql/README.md)
 
+## Generate OpenAPI Specification
+
+[Generate OpenAPI Specification](generate-openapi-spec/README.md)
+
 ## Generate Feature
 
 [Generate Feature](generate-feature/README.md)
