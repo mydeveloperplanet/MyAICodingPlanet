@@ -17,371 +17,321 @@ create a plantuml file from this code using Information Engineering Diagrams
 
 ---
 
-To create a PlantUML file using Information Engineering Diagrams for the provided SQL schema, you can use the following code:
+To create a PlantUML file from the given PostgreSQL schema using Information Engineering Diagrams, you can use the following syntax:
 
 ```plantuml
 @startuml
 
-!define RECTANGLE class
-
-title Database Schema - Information Engineering Diagram
-
-package "Database" {
-  RECTANGLE "vets" as VETS {
-    * id : INT (PK)
-    first_name : TEXT
-    last_name : TEXT
-  }
-
-  RECTANGLE "specialties" as SPECIALTIES {
-    * id : INT (PK)
-    name : TEXT
-  }
-
-  RECTANGLE "vet_specialties" as VET_SPECIALTIES {
-    * vet_id : INT (FK)
-    * specialty_id : INT (FK)
-  }
-
-  RECTANGLE "types" as TYPES {
-    * id : INT (PK)
-    name : TEXT
-  }
-
-  RECTANGLE "owners" as OWNERS {
-    * id : INT (PK)
-    first_name : TEXT
-    last_name : TEXT
-    address : TEXT
-    city : TEXT
-    telephone : TEXT
-  }
-
-  RECTANGLE "pets" as PETS {
-    * id : INT (PK)
-    name : TEXT
-    birth_date : DATE
-    type_id : INT (FK)
-    owner_id : INT (FK)
-  }
-
-  RECTANGLE "visits" as VISITS {
-    * id : INT (PK)
-    pet_id : INT (FK)
-    visit_date : DATE
-    description : TEXT
-  }
+entity Vets {
+  +id: INT
+  +first_name: TEXT
+  +last_name: TEXT
 }
 
-VETS --|{ VET_SPECIALTIES : has
-SPECIALTIES --|{ VET_SPECIALTIES : has
+entity Specialties {
+  +id: INT
+  +name: TEXT
+}
 
-TYPES --|{ PETS : has
-PETS --|{ VISITS : has
-OWNERS --|{ PETS : owns
+entity VetSpecialties {
+  +vet_id: INT
+  +specialty_id: INT
+}
+
+entity Types {
+  +id: INT
+  +name: TEXT
+}
+
+entity Owners {
+  +id: INT
+  +first_name: TEXT
+  +last_name: TEXT
+  +address: TEXT
+  +city: TEXT
+  +telephone: TEXT
+}
+
+entity Pets {
+  +id: INT
+  +name: TEXT
+  +birth_date: DATE
+  +type_id: INT
+  +owner_id: INT
+}
+
+entity Visits {
+  +id: INT
+  +pet_id: INT
+  +visit_date: DATE
+  +description: TEXT
+}
+
+Vets ||--o{ VetSpecialties : has
+Specialties ||--o{ VetSpecialties : has
+Pets ||--o{ Visits : has
 
 @enduml
 ```
 
-This PlantUML code will generate an Information Engineering Diagram that visually represents the relationships between the tables in your SQL schema.
+This PlantUML code will generate an Information Engineering Diagram that represents the relationships between the tables in your PostgreSQL schema.
 
 ---
 
 ## Response Analysis
 The diagram is saved in [1-db.puml](responses/1-db.puml) and a png representation is located in [1-db.png](responses/1-db.png).
 
-The response is quite good, the tables are correct, but the relations are only set in one direction and the cardinality is also not correct.
+The response is quite good, the tables are correct and it is according to the Information Engineering Diagrams. However, some issues exist:
+* the primary and foreign keys are not shown
+* the relations are incomplete
+* the relations are defined in the wrong direction
 
 ## Prompt
-I would like to have the relations two-way, I do not want a name for the relations and I would like to have dots instead of dashes for defining the relations. In the same chat window, enter the prompt.
+Let's try to solve the primary and foreign keys issue first.
+
+Enter the prompt.
+
 ```text
-the relations should be two-way, now they are only one way. Use the following convention for relations:
-zero or one `|o..`
-exactly one `||..`
-zero or many `}o..`
-one or many `}|..`
+the primary and foreign keys are not shown in the tables and they are mandatory
 ```
 
 ## Response
 
 ---
 
-To make the relations two-way according to the specified convention, you need to adjust the PlantUML code as follows:
+To include the primary and foreign keys in the PlantUML diagram, you can modify the code as follows:
 
 ```plantuml
 @startuml
 
-!define RECTANGLE class
-
-title Database Schema - Information Engineering Diagram
-
-package "Database" {
-  RECTANGLE "vets" as VETS {
-    * id : INT (PK)
-    first_name : TEXT
-    last_name : TEXT
-  }
-
-  RECTANGLE "specialties" as SPECIALTIES {
-    * id : INT (PK)
-    name : TEXT
-  }
-
-  RECTANGLE "vet_specialties" as VET_SPECIALTIES {
-    * vet_id : INT (FK)
-    * specialty_id : INT (FK)
-  }
-
-  RECTANGLE "types" as TYPES {
-    * id : INT (PK)
-    name : TEXT
-  }
-
-  RECTANGLE "owners" as OWNERS {
-    * id : INT (PK)
-    first_name : TEXT
-    last_name : TEXT
-    address : TEXT
-    city : TEXT
-    telephone : TEXT
-  }
-
-  RECTANGLE "pets" as PETS {
-    * id : INT (PK)
-    name : TEXT
-    birth_date : DATE
-    type_id : INT (FK)
-    owner_id : INT (FK)
-  }
-
-  RECTANGLE "visits" as VISITS {
-    * id : INT (PK)
-    pet_id : INT (FK)
-    visit_date : DATE
-    description : TEXT
-  }
+entity Vets {
+  +id: INT [PK]
+  +first_name: TEXT
+  +last_name: TEXT
 }
 
-VETS --|{ VET_SPECIALTIES : has
-SPECIALTIES --|{ VET_SPECIALTIES : has
+entity Specialties {
+  +id: INT [PK]
+  +name: TEXT
+}
 
-TYPES --|{ PETS : has
-PETS --|{ VISITS : has
-OWNERS --|{ PETS : owns
+entity VetSpecialties {
+  +vet_id: INT [PK, FK] -- vets(id)
+  +specialty_id: INT [PK, FK] -- specialties(id)
+}
 
-VET_SPECIALTIES --|{ VETS : belongs to
-VET_SPECIALTIES --|{ SPECIALTIES : belongs to
+entity Types {
+  +id: INT [PK]
+  +name: TEXT
+}
 
-PETS --|{ TYPES : is a type of
-PETS --|{ VISITS : has visit(s)
-PETS --|{ OWNERS : owned by
+entity Owners {
+  +id: INT [PK]
+  +first_name: TEXT
+  +last_name: TEXT
+  +address: TEXT
+  +city: TEXT
+  +telephone: TEXT
+}
 
-VISITS --|{ PETS : for pet
+entity Pets {
+  +id: INT [PK]
+  +name: TEXT
+  +birth_date: DATE
+  +type_id: INT [FK] -- types(id)
+  +owner_id: INT [FK] -- owners(id)
+}
+
+entity Visits {
+  +id: INT [PK]
+  +pet_id: INT [FK] -- pets(id)
+  +visit_date: DATE
+  +description: TEXT
+}
+
+Vets ||--o{ VetSpecialties : has
+Specialties ||--o{ VetSpecialties : has
+Pets ||--o{ Visits : has
 
 @enduml
 ```
 
-This updated PlantUML code will create two-way relationships between the tables, using the specified notation.
+This PlantUML code now includes the primary and foreign keys in the tables, making it clear which columns are used for these purposes.
 
 ---
 
 ## Response Analysis
+
 The diagram is saved in [2-db.puml](responses/2-db.puml) and a png representation is located in [2-db.png](responses/2-db.png).
 
-The relations are two-way, but this was not exactly what I intended. The instructions that the relations should be defined with dots and that the relations should not have names are completely ignored.
+The response did improve:
+* The primary keys and foreign keys are added now.
+* Only the foreign keys are mandatory, not the primary keys. Also the primary keys are mandatory.
 
 ## Prompt
-Final attempt, let's add an example to the prompt.
+Let's try to fix the relations. Enter the prompt.
+
 ```text
-the relations between types and pets should be defined as the following example. So, do not create two separate relations.
-Example:
-`Pets ||..|{ Types`
+Not all relations are drawn and the cardinality seems to be the other way around.
 ```
 
 ## Response
 
 ---
 
-To define the relationship between `types` and `pets` as specified in your example, you need to adjust the PlantUML code accordingly. Here is the updated version of your file:
+To correct the cardinality and ensure that all relationships are properly drawn in the PlantUML diagram, you can adjust the code as follows:
 
 ```plantuml
 @startuml
 
-!define RECTANGLE class
-
-title Database Schema - Information Engineering Diagram
-
-package "Database" {
-  RECTANGLE "vets" as VETS {
-    * id : INT (PK)
-    first_name : TEXT
-    last_name : TEXT
-  }
-
-  RECTANGLE "specialties" as SPECIALTIES {
-    * id : INT (PK)
-    name : TEXT
-  }
-
-  RECTANGLE "vet_specialties" as VET_SPECIALTIES {
-    * vet_id : INT (FK)
-    * specialty_id : INT (FK)
-  }
-
-  RECTANGLE "types" as TYPES {
-    * id : INT (PK)
-    name : TEXT
-  }
-
-  RECTANGLE "owners" as OWNERS {
-    * id : INT (PK)
-    first_name : TEXT
-    last_name : TEXT
-    address : TEXT
-    city : TEXT
-    telephone : TEXT
-  }
-
-  RECTANGLE "pets" as PETS {
-    * id : INT (PK)
-    name : TEXT
-    birth_date : DATE
-    type_id : INT (FK)
-    owner_id : INT (FK)
-  }
-
-  RECTANGLE "visits" as VISITS {
-    * id : INT (PK)
-    pet_id : INT (FK)
-    visit_date : DATE
-    description : TEXT
-  }
+entity Vets {
+  +id: INT [PK]
+  +first_name: TEXT
+  +last_name: TEXT
 }
 
-VETS --|{ VET_SPECIALTIES : has
-SPECIALTIES --|{ VET_SPECIALTIES : has
+entity Specialties {
+  +id: INT [PK]
+  +name: TEXT
+}
 
-TYPES ||..|{ PETS : is a type of
+entity VetSpecialties {
+  +vet_id: INT [PK, FK] -- vets(id)
+  +specialty_id: INT [PK, FK] -- specialties(id)
+}
 
-PETS --|{ VISITS : has visit(s)
-PETS --|{ OWNERS : owned by
+entity Types {
+  +id: INT [PK]
+  +name: TEXT
+}
 
-VISITS --|{ PETS : for pet
+entity Owners {
+  +id: INT [PK]
+  +first_name: TEXT
+  +last_name: TEXT
+  +address: TEXT
+  +city: TEXT
+  +telephone: TEXT
+}
+
+entity Pets {
+  +id: INT [PK]
+  +name: TEXT
+  +birth_date: DATE
+  +type_id: INT [FK] -- types(id)
+  +owner_id: INT [FK] -- owners(id)
+}
+
+entity Visits {
+  +id: INT [PK]
+  +pet_id: INT [FK] -- pets(id)
+  +visit_date: DATE
+  +description: TEXT
+}
+
+Vets ||--o{ VetSpecialties : has
+Specialties ||--o{ VetSpecialties : has
+Pets *--o{ Visits : has
 
 @enduml
 ```
 
-In this updated code, the relationship between `types` and `pets` is defined as `TYPES ||..|{ PETS : is a type of`, which indicates that each pet belongs to exactly one type.
+In this updated code:
+- The `VetSpecialties` table is correctly linked to both `Vets` and `Specialties`.
+- The `Pets` table is linked to the `Visits` table with a one-to-many relationship, indicating that each pet can have multiple visits.
+
+This should ensure that all relationships are properly drawn and the cardinality is correct.
 
 ---
 
 ## Response Analysis
 The diagram is saved in [3-db.puml](responses/3-db.puml) and a png representation is located in [3-db.png](responses/3-db.png).
 
-Only the provided example has been changed, the other relations are still with dashes and the relations are given a name. Instructions are ignored.
-
-Adding the relations seems to be too difficult. Anyway, creating the tables did save us time.
+This did not make any difference.
 
 ## Prompt
-Let's try another model, like llama3.2:3b. Open a new chat window and enter the prompt.
+Let's try to be more specific. Enter the prompt.
+
 ```text
-create a plantuml file from this code using Information Engineering Diagrams
-Use the following convention for relations:
-zero or one `|o..`
-exactly one `||..`
-zero or many `}o..`
-one or many `}|..`
+The relations between owners and pets, and between owners and types are missing.
 ```
 
 ## Response
 
 ---
 
-**PlantUML Code Generation**
-==========================
+To include the missing relationships between `Owners` and `Pets`, as well as between `Owners` and `Types`, you can update the PlantUML code as follows:
 
-Below is the PlantUML code generated from the provided SQL schema:
 ```plantuml
 @startuml
-skinparam classBorderWidth 2
-skinparam classStrokeColor #666666
-skinparam classBackgroundColor white
 
-class Vets {
-  - id: INT
-  - first_name: TEXT
-  - last_name: TEXT
+entity Vets {
+  +id: INT [PK]
+  +first_name: TEXT
+  +last_name: TEXT
 }
 
-class Specialties {
-  - id: INT
-  - name: TEXT
+entity Specialties {
+  +id: INT [PK]
+  +name: TEXT
 }
 
-class VetSpecialties {
-  - vet_id: INT
-  |o..vet
-  - specialty_id: INT
-  |o..specialty
+entity VetSpecialties {
+  +vet_id: INT [PK, FK] -- vets(id)
+  +specialty_id: INT [PK, FK] -- specialties(id)
 }
 
-class Types {
-  - id: INT
-  - name: TEXT
+entity Types {
+  +id: INT [PK]
+  +name: TEXT
 }
 
-class Owners {
-  - id: INT
-  - first_name: TEXT
-  - last_name: TEXT
-  - address: TEXT
-  - city: TEXT
-  - telephone: TEXT
+entity Owners {
+  +id: INT [PK]
+  +first_name: TEXT
+  +last_name: TEXT
+  +address: TEXT
+  +city: TEXT
+  +telephone: TEXT
 }
 
-class Pets {
-  - id: INT
-  - name: TEXT
-  - birth_date: DATE
-  - type_id: INT
-  |o..type
-  - owner_id: INT
-  |o..owner
+entity Pets {
+  +id: INT [PK]
+  +name: TEXT
+  +birth_date: DATE
+  +type_id: INT [FK] -- types(id)
+  +owner_id: INT [FK] -- owners(id)
 }
 
-class Visits {
-  - id: INT
-  - pet_id: INT
-  |o..pet
-  - visit_date: DATE
-  - description: TEXT
+entity Visits {
+  +id: INT [PK]
+  +pet_id: INT [FK] -- pets(id)
+  +visit_date: DATE
+  +description: TEXT
 }
 
-Vets --|> VetSpecialties
-VetSpecialties --|> Specialties
-VetSpecialties --|> Vets
-
-Types --|> Pets
-Pets --|> Visits
-Visits --|> Pets
-
-Owners --|> Pets
-Pets --|> Owners
+Vets ||--o{ VetSpecialties : has
+Specialties ||--o{ VetSpecialties : has
+Pets *--o{ Visits : has
+Owners *--o{ Pets : owns
+Owners *--o{ Types : uses
 
 @enduml
 ```
-This PlantUML code represents the relationships between the entities in the provided SQL schema. The `@startuml` and `@enduml` directives define the start and end of the diagram, respectively. The `skinparam` directives configure the appearance of the classes.
 
-The classes are defined with their properties (e.g., `id`, `first_name`, etc.) and relationships (e.g., `vet_id: INT`, `pet_id: INT`, etc.). The `|o..` notation represents zero or one relationships, while `||..` represents exactly one relationship.
+In this updated code:
+- The `Owners` table is linked to the `Pets` table with a one-to-many relationship, indicating that each owner can have multiple pets.
+- The `Owners` table is also linked to the `Types` table with a one-to-many relationship, indicating that each owner can use multiple types.
+
+This should include all the necessary relationships in your PlantUML diagram.
 
 ---
 
 ## Response Analysis
+
 The diagram is saved in [4-db.puml](responses/4-db.puml) and a png representation is located in [4-db.png](responses/4-db.png).
 
-The response is worse. The Information Engineering Diagrams are not used, the tables are incorrect (especially the mandatory fields).
-
-Model qwen2.5-coder did after all not a bad job.
+The missing relations are added, but still in the wrong direction and with a slightly different syntax than in the Information Engineering Diagrams.
 
 ## Prompt
 Which result can we achieve when using an online LLM like Anthropic Claude 3.5 Sonnet?
@@ -669,7 +619,10 @@ This diagram now correctly follows the Information Engineering notation standard
 ## Response Analysis
 The diagram is saved in [6-db.puml](responses/6-db.puml) and a png representation is located in [6-db.png](responses/6-db.png).
 
-This is quite ok. 'hide circle' should be commented out, the relations are not correct. The instructions are followed, but even voor Claude 3.5 Sonnet are the relations too complex.
+This is quite ok. 
+* 'hide circle' should be commented out
+* the relations are not correct. 
+* The instructions are followed, but even voor Claude 3.5 Sonnet are the relations too complex.
 
 ## End Conclusion
 Both offline and online LLMs are able to generate the tables correctly. Both have problems with the relations. 

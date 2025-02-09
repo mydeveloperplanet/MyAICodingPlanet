@@ -1,67 +1,54 @@
 @startuml
-skinparam classBorderWidth 2
-skinparam classStrokeColor #666666
-skinparam classBackgroundColor white
 
-class Vets {
-  - id: INT
-  - first_name: TEXT
-  - last_name: TEXT
+entity Vets {
+  +id: INT [PK]
+  +first_name: TEXT
+  +last_name: TEXT
 }
 
-class Specialties {
-  - id: INT
-  - name: TEXT
+entity Specialties {
+  +id: INT [PK]
+  +name: TEXT
 }
 
-class VetSpecialties {
-  - vet_id: INT
-  |o..vet
-  - specialty_id: INT
-  |o..specialty
+entity VetSpecialties {
+  +vet_id: INT [PK, FK] -- vets(id)
+  +specialty_id: INT [PK, FK] -- specialties(id)
 }
 
-class Types {
-  - id: INT
-  - name: TEXT
+entity Types {
+  +id: INT [PK]
+  +name: TEXT
 }
 
-class Owners {
-  - id: INT
-  - first_name: TEXT
-  - last_name: TEXT
-  - address: TEXT
-  - city: TEXT
-  - telephone: TEXT
+entity Owners {
+  +id: INT [PK]
+  +first_name: TEXT
+  +last_name: TEXT
+  +address: TEXT
+  +city: TEXT
+  +telephone: TEXT
 }
 
-class Pets {
-  - id: INT
-  - name: TEXT
-  - birth_date: DATE
-  - type_id: INT
-  |o..type
-  - owner_id: INT
-  |o..owner
+entity Pets {
+  +id: INT [PK]
+  +name: TEXT
+  +birth_date: DATE
+  +type_id: INT [FK] -- types(id)
+  +owner_id: INT [FK] -- owners(id)
 }
 
-class Visits {
-  - id: INT
-  - pet_id: INT
-  |o..pet
-  - visit_date: DATE
-  - description: TEXT
+entity Visits {
+  +id: INT [PK]
+  +pet_id: INT [FK] -- pets(id)
+  +visit_date: DATE
+  +description: TEXT
 }
 
-Vets --|> VetSpecialties
-VetSpecialties --|> Specialties
-VetSpecialties --|> Vets
-
-Types --|> Pets
-Pets --|> Visits
-Visits --|> Pets
-
-Owners --|> Pets
-Pets --|> Owners
+Vets ||--o{ VetSpecialties : has
+Specialties ||--o{ VetSpecialties : has
+Pets *--o{ Visits : has
+Owners *--o{ Pets : owns
+Owners *--o{ Types : uses
 
 @enduml
