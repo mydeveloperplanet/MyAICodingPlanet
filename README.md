@@ -10,6 +10,9 @@ Two different setups are used, in every README the used setup is mentioned.
 1. [Ollama](https://ollama.com/) as inference engine and qwen2.5-coder:7b as a model is used. This runs on CPU only.
 2. [LMStudio](https://lmstudio.ai/) as inference engine and qwen2.5-coder:7b as a model is used. This runs on GPU only.
 
+The corresponding blog posts can be found here:
+* https://mydeveloperplanet.com/2025/02/19/unlocking-ai-coding-assistants-real-world-use-cases-part-1/
+
 ## Explain Kubernetes Yaml
 
 [Explain Kubernetes Yaml](explain-k8s-yaml/README.md)
@@ -54,6 +57,10 @@ Two different setups are used, in every README the used setup is mentioned.
 
 [Generate PlantUML from SQL](generate-plantuml-from-sql/README.md)
 
+## Generate PlantUML Class Diagram
+
+[Generate PlantUML Class Diagram](generate-plantuml-class-diagram/README.md)
+
 ## Generate OpenAPI Specification
 
 [Generate OpenAPI Specification](generate-openapi-spec/README.md)
@@ -61,3 +68,7 @@ Two different setups are used, in every README the used setup is mentioned.
 ## Generate Feature
 
 [Generate Feature](generate-feature/README.md)
+
+## Generate Test Data
+
+[Generate Test Data](generate-test-data/README.md)
