@@ -444,6 +444,6 @@ INSERT INTO visits (pet_id, visit_date, description) VALUES
 ## Response Analysis
 The LLM created 20 visits for the first 20 pets. It is not very creative because it just took the first 20 pets, but it did what was asked.
 
-The data is gathered in file [large-data-with-visits.sql](responses/large-data-with-visits.sql). Copy and paste it in the data.sql file of the Spring PetClinic. Start the database container and the Spring PetClinic application. All data is available for use.
+The data is gathered in file [large-data-with-visits.sql](responses/large-data-with-visits.sql). Copy and paste it in the data.sql file of the Spring Petclinic. Start the database container and the Spring PetClinic application. All data is available for use.
 
 Generating test data with an LLM can save you a lot of time. Dependent of the capabilities of your LLM, it is wise to split it into smaller tasks for better results.
