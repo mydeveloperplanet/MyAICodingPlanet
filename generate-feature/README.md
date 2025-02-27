@@ -239,17 +239,17 @@ The search is case-insensitive and will match partial names, making it easy to f
 
 ## Response Analysis
 
-The suggested changes seem to be ok. These are applied in this [branch](https://github.com/mydeveloperplanet/devoxxgenie-spring-petclinic/tree/feature-search-pets-first-response-new-solution)
+The suggested changes seem to be ok. They are applied in this [branch](https://github.com/mydeveloperplanet/devoxxgenie-spring-petclinic/tree/feature-search-pets-first-response-new-solution)
 
 After applying the changes, you also need to format the files.
 ```shell
-spring-javaformat:apply
+mvn spring-javaformat:apply
 ```
 
 However, when you run the application and click the 'Find Pets' menu item, an exception occurs.
 
 ## Prompt
-Enter the prompt.
+Copy the exception and enter the prompt.
 
 ```text
     the following error occurs:
@@ -366,10 +366,10 @@ These changes should resolve the error by ensuring that:
 When you apply the suggested fixes and run the application, again an exception occurs.
 
 ## Prompt
-Enter the prompt.
+Copy the exception and enter the prompt.
 
 ```text
-    the following eror occurs
+    the following error occurs
     ```
     Caused by: org.hibernate.query.sqm.UnknownPathException: Could not resolve attribute 'owner' of 'org.springframework.samples.petclinic.owner.Pet' [SELECT DISTINCT pet FROM Pet pet LEFT JOIN FETCH pet.owner WHERE LOWER(pet.name) LIKE LOWER(CONCAT('%', :name, '%'))]
     at org.hibernate.query.hql.internal.StandardHqlTranslator.translate(StandardHqlTranslator.java:88) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
@@ -450,13 +450,13 @@ The suggested changes seem to be ok. These are applied in this [branch](https://
 
 This time, the functionality is working as expected.
 
-A new menu item is added
+A new menu item is added.
 ![Find Pets](sources/spring-petclinic-find-pets-menu.png)
 
-Find all pets
+You can find all pets, which results in a paginated list of pets.
 ![Find All Pets](sources/spring-petclinic-find-all-pets.png)
 
-Find one specific pet
+You can find a single pet which returns the item in the list because there is no pet detail page.
 ![Find One Specific Pet](sources/spring-petclinic-find-one-pet.png)
 
 

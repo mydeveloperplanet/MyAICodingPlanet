@@ -127,8 +127,8 @@ You can copy and paste this code into a PlantUML editor to generate the class di
 ## Response Analysis
 The diagram is saved in [1-class-diagram.puml](responses/1-class-diagram.puml) and a png representation is located in [1-class-diagram.png](responses/1-class-diagram.png).
 
-The response is quite good, but also some issue exist:
-* The relations for the `Refactor` class are incomplete. Classes `RefactorMessage`, `SingleDataDto`, `MultiDataDto`, etc are also used.
+The response is quite good, but also some issues exist:
+* The relations for the `Refactor` class are incomplete. Classes `RefactorMessage`, `SingleDataDto`, `MultiDataDto`, etc. are also used.
 * The double relations between `BaseMessage` and `LocationMessage`, `MultiDataMessage`, `SingleDataMessage` are not correct. This should be a single relation.
 * Methods and class variables are correct.
 * The visibility of methods in class `Refactor` is not correct. Only the `main` method has public visibility and the others should be private.
@@ -273,4 +273,4 @@ The diagram is saved in [2-class-diagram.puml](responses/2-class-diagram.puml) a
 
 Some general suggestions are given. However, the only difference with the previous version, is that the relationship between `RefactorMessage` and `DataRepository`, `MessageService` has a label `uses`.
 
-To conclude with, the classes are generated correctly besides the visibility. This saves you already a lot of time. The relations, visibility, etc needs to be added or corrected after reviewing the PlanUML.
+To conclude with, the classes are generated correctly besides the visibility. This saves you already a lot of time. The relations, visibility, etc. needs to be added or corrected after reviewing the PlantUML.

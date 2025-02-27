@@ -5,7 +5,7 @@ Writing documentation can be a tedious task. Let's investigate whether AI can ge
 The goal is to create a database diagram according to [Information Engineering Diagrams](https://plantuml.com/ie-diagram)
 
 ## Setup
-Ollama, qwen2.5-coder, CPU
+LMStudio, qwen2.5-coder, GPU
 
 ## Prompt
 Open the file [postgres-schema.sql](sources/postgres-schema.sql) and in a new chat window, enter the prompt.
@@ -247,7 +247,7 @@ This should ensure that all relationships are properly drawn and the cardinality
 ## Response Analysis
 The diagram is saved in [3-db.puml](responses/3-db.puml) and a png representation is located in [3-db.png](responses/3-db.png).
 
-This did not make any difference.
+This did not make any significant difference.
 
 ## Prompt
 Let's try to be more specific. Enter the prompt.
@@ -435,7 +435,7 @@ You can copy this code into a `.puml` file and use a PlantUML renderer to genera
 ## Response Analysis
 The diagram is saved in [5-db.puml](responses/5-db.puml) and a png representation is located in [5-db.png](responses/5-db.png).
 
-This seems to be give a better result, only the Information Engineering Diagrams are not used.
+This seems to be a better result, only the Information Engineering Diagrams are not used.
 
 ## Prompt
 Apparently, Claude does not know the IE syntax, so let's give the instructions in the prompt.
@@ -622,7 +622,7 @@ The diagram is saved in [6-db.puml](responses/6-db.puml) and a png representatio
 This is quite ok. 
 * 'hide circle' should be commented out
 * the relations are not correct. 
-* The instructions are followed, but even voor Claude 3.5 Sonnet are the relations too complex.
+* The instructions are followed, but even voor Claude 3.5 Sonnet the relations too complex to draw.
 
 ## End Conclusion
 Both offline and online LLMs are able to generate the tables correctly. Both have problems with the relations. 

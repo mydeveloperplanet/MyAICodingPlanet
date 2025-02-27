@@ -2,7 +2,7 @@
 
 The goal is to generate testdata based on an SQL schema.
 
-The final solution [branch](https://github.com/mydeveloperplanet/devoxxgenie-spring-petclinic/tree/feature-search-pets-final-new-solution) of the Spring PetClinic [generating a feature](../generate-feature/README.md) is used.  
+The final solution [branch](https://github.com/mydeveloperplanet/devoxxgenie-spring-petclinic/tree/feature-search-pets-final-new-solution) of the Spring Petclinic [generating a feature](../generate-feature/README.md) is used.  
 
 The setup using PostgreSQL is needed. Some actions need to be taken for this.
 * Run the PostgreSQL database. Start the following command from within the root of the repository.
@@ -13,7 +13,7 @@ The setup using PostgreSQL is needed. Some actions need to be taken for this.
     ```text
     database=h2
     ```
-* Run the Spring PetClinic.
+* Run the Spring Petclinic.
     ```shell
     mvn spring-boot:run
     ```
@@ -79,7 +79,7 @@ You can run these SQL commands in your PostgreSQL database to populate the table
 
 Using a visual check, this seems to be ok. But, the proof of the pudding is in the eating, so let's use the data.
 
-* Shut down the Spring PetClinic and PostgreSQL container (`docker compose down`).
+* Shut down the Spring Petclinic and PostgreSQL container (`docker compose down`).
 * Copy the suggested test data in file `src/main/resources/db/postgres/data.sql`
 * Start the PostgreSQL container and Spring Boot application.
 
@@ -147,7 +147,7 @@ Mediocre response and incomplete.
 * A second owner is added with two pets.
 * The pet names are not very creative (Pet1, Pet2, Pet3). Same applies to the owners.
 
-After this, some tests were performed using a higher temperature, but the SQL statements were not correct anymore and the data was incomplet.
+After this, some tests were performed using a higher temperature, but the SQL statements were not correct anymore and the data was incomplete.
 
 ## Prompt
 Let's try to split it up in smaller tasks.
@@ -394,12 +394,12 @@ This SQL script will insert one pet for each owner listed in the `large-data-wit
 ---
 
 ## Response Analysis
-50 pets are created. But, the LLM did not take into account the 29 owners. Also owner ID's higher than 29 are used, even up to and including 50. However, when you omit these, or assign them to existing owners, the data is usable.
+50 pets are created. However, owner ID's higher than 29 are used, even up to and including 50. When you omit these, or assign them to existing owners, the data is usable.
 
 File [large-data-with-pets.sql](responses/large-data-with-pets.sql) contains a fixed version.
 
 ## Prompt
-Last thing we are missing are some visits.
+The only thing we are missing are some visits.
 
 All data up till now is gathered in file [large-data-with-pets.sql](responses/large-data-with-pets.sql)
 
@@ -442,7 +442,7 @@ INSERT INTO visits (pet_id, visit_date, description) VALUES
 ---
 
 ## Response Analysis
-The LLM created 20 visits for the first 20 pets. It is not very creative, but it just did what was asked.
+The LLM created 20 visits for the first 20 pets. It is not very creative because it just took the first 20 pets, but it did what was asked.
 
 The data is gathered in file [large-data-with-visits.sql](responses/large-data-with-visits.sql). Copy and paste it in the data.sql file of the Spring PetClinic. Start the database container and the Spring PetClinic application. All data is available for use.
 

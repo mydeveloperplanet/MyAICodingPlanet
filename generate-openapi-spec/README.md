@@ -8,7 +8,10 @@ LMStudio, qwen2.5-coder, GPU
 ## Prompt
 Enter the following prompt.
 ```text
-Generate an OpenAPI specification version 3.1.1. The spec should contain CRUD methods for customers. The customers have a first name and a last name. Use the Zalando restful api guidelines.
+Generate an OpenAPI specification version 3.1.1. 
+The spec should contain CRUD methods for customers. 
+The customers have a first name and a last name. 
+Use the Zalando restful api guidelines.
 ```
 
 ## Response
