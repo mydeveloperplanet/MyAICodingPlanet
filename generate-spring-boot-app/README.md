@@ -160,3 +160,107 @@ Into:
 Run the build, the build is successful.
 
 The changes can be viewed [here](https://github.com/mydeveloperplanet/myaicodeprojectplanet/tree/feature/add-domain-model).
+
+## Generate Repository
+In this section, the repository will be generated.
+
+### Prompt
+Add the full project and also add the generated jOOQ classes from the directory `target/generated-sources/jooq` to the Prompt Context. Note: later it seemed that DevoxxGenie did not add these files at all because they were ignored in the `.gitignore` file and that seems to have a higher priority.
+```text
+Generate a CustomerRepository in order that the operations defined in the openapi spec customers.yaml are supported
+```
+
+### Response
+The response can be viewed [here](responses/4-1-repository).
+
+The response uses Spring Data JPA and this is not what is wanted. 
+
+### Prompt
+Give explicit instructions to only use dependencies in the pom.xml.
+```text
+Generate a CustomerRepository in order that the operations defined in the openapi spec customers.yaml are supported.
+Only use dependencies available in the pom.xml
+```
+
+### Response
+The response can be viewed [here](responses/4-2-repository).
+
+The same response is returned. The instructions are ignored.
+
+### Prompt
+Let's be more specific. Enter the prompt.
+```text
+You do not use the dependencies defined in the pom. You should use jooq instead of jpa
+```
+
+### Response
+The response can be viewed [here](responses/4-3-repository).
+
+### Apply Response
+This response looks great. Even an example of how to use it in a Service is added.
+
+A `RuntimeException` is thrown when a Customer cannot be found. Probably this needs to be changed, but for the moment this will do.
+
+Create a package `com/mydeveloperplanet/myaicodeprojectplanet/repository` and paste the `CustomerRepository` code. Some issues are present:
+* The package `com.mydeveloperplanet.myaicodeprojectplanet.jooq` could not be found. A Maven Sync solved this issue.
+* `Customers.CUSTOMER` could not be found. The following line needed to be added `import com.mydeveloperplanet.myaicodeprojectplanet.jooq.tables.Customers;`
+* Still two compile errors remain due to a non-existing `exists()` method.
+```java
+if (dslContext.selectFrom(Customers.CUSTOMERS)
+              .where(Customers.CUSTOMERS.ID.eq(id))
+              .exists())
+```
+
+### Prompt
+Open a new chat window. Open the `CustomerRepository` file and enter the prompt.
+```text
+the .exists() method does not seem to be available, fix the code
+```
+
+### Response
+The response can be viewed [here]().
+
+### Apply Response
+The response suggests to use the `selectExists` method, but also this method is non-existing.
+
+### Prompt
+Enter the follow-up prompt.
+```text
+the selectExists method is also not available, fix the code properly
+```
+
+### Response
+The response can be viewed [here]().
+
+### Apply Response
+The response suggests to use the `fetchExists` method. This is already closer to the real solution. The LLM suggests to use:
+```java
+boolean exists = dslContext.selectFrom(Customers.CUSTOMERS)
+                           .where(Customers.CUSTOMERS.ID.eq(id))
+                           .fetchExists();
+```
+Time to help a little bit and change it manually to the correct implementation.
+```java
+boolean exists = dslContext.fetchExists(dslContext.selectFrom(Customers.CUSTOMERS));
+```
+
+Run the build, the build is successful.
+
+### Prompt
+In the current implementation, the repository methods use the jOOQ generated `CustomersRecord` as an argument. This means that the service layer would need to know about the repository layer and this is not correct. The service layer should know only the domain model.
+
+Open a new chat window, add the `src` directory to the Prompt Context and also the generated jOOQ classes from the directory `target/generated-sources/jooq`. Enter the prompt.
+```text
+I want that the methods make use of the Customer model and that any mappings 
+between Customer and CustomerRecord are done in the CustomerRepository itself
+```
+
+### Response
+The response can be viewed [here](responses/4-6-repository.md).
+
+### Apply Response
+This looks great. Some variables, arguments are called `record` and this is a reserved word. Change this in `customerRecord`.
+
+Run the build, the build is successful.
+
+This took a bit longer than the previous generations, but the end result is quite good.
