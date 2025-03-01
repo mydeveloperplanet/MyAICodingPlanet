@@ -453,8 +453,6 @@ spring.liquibase.change-log=classpath:db/changelog/db.changelog-root.xml
 
 Run the application and now it starts successfully.
 
-The changes can be viewed [here](https://github.com/mydeveloperplanet/myaicodeprojectplanet/tree/feature/run-application).
-
 ## Test Application
 The application runs, but is it also functional?
 
@@ -470,7 +468,7 @@ The response can be viewed [here](responses/7-tests.md).
 ### Run Tests
 Create a Customer.
 ```shell
-$ curl -X POST "http://localhost:8080/customers" -H "Content-Type: application/json" -d '{
+curl -X POST "http://localhost:8080/customers" -H "Content-Type: application/json" -d '{
   "firstName": "John",
   "lastName": "Doe"
 }'
@@ -483,6 +481,8 @@ This test fails. The cause is that the `CustomerController` has the following un
 This should not be here, this is already part of the `CustomersApi` interface.
 
 Remove this line, build the application and run it again.
+
+The changes can be viewed [here](https://github.com/mydeveloperplanet/myaicodeprojectplanet/tree/feature/run-application).
 
 Create a Customer. This is successful.
 ```shell
