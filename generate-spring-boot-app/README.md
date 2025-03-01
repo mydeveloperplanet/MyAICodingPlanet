@@ -88,7 +88,7 @@ The build shows some warnings, but these can be fixed by adding an `operationId`
 The changes can be viewed [here](https://github.com/mydeveloperplanet/myaicodeprojectplanet/tree/feature/add-openapi-spec).
 
 ## Generate Liquibase Scripts
-In this section the Liquibase scripts will be generated.
+In this section, the Liquibase scripts will be generated.
 
 ### Prompt
 Open the OpenAPI spec and enter the prompt.
@@ -125,6 +125,38 @@ INFO: Table customers created
 Feb 23, 2025 12:42:59 PM liquibase.changelog
 ```
 
-In directory `target/generated-sources/jooq` you can find the generated jOOQ files which are generated also.
+In directory `target/generated-sources/jooq` you can also find the generated jOOQ files which are generated.
 
 The changes can be viewed [here](https://github.com/mydeveloperplanet/myaicodeprojectplanet/tree/feature/add-liquibase-scripts).
+
+## Generate Domain Model
+In this section, the domain model will be generated.
+
+### Prompt
+Open the Liquibase migration script and enter the prompt.
+```text
+Create a domain model based on this liquibase migration script
+```
+
+### Response
+The response can be viewed [here](responses/3-domain-model.md).
+
+### Apply Response
+Create class `Customer` in package `com.mydeveloperplanet.myaicodeprojectplanet.model`. This clashes with the OpenAPI domain model package.
+
+Change the following lines in the pom.xml:
+```xml
+<packageName>com.mydeveloperplanet.myaicodeprojectplanet</packageName>
+<apiPackage>com.mydeveloperplanet.myaicodeprojectplanet.api</apiPackage>
+<modelPackage>com.mydeveloperplanet.myaicodeprojectplanet.model</modelPackage>
+```
+Into:
+```xml
+<packageName>com.mydeveloperplanet.myaicodeprojectplanet.openapi</packageName>
+<apiPackage>com.mydeveloperplanet.myaicodeprojectplanet.openapi.api</apiPackage>
+<modelPackage>com.mydeveloperplanet.myaicodeprojectplanet.openapi.model</modelPackage>
+```
+
+Run the build, the build is successful.
+
+The changes can be viewed [here](https://github.com/mydeveloperplanet/myaicodeprojectplanet/tree/feature/add-domain-model).
