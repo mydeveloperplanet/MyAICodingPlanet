@@ -86,3 +86,45 @@ The build shows some warnings, but these can be fixed by adding an `operationId`
 ```
 
 The changes can be viewed [here](https://github.com/mydeveloperplanet/myaicodeprojectplanet/tree/feature/add-openapi-spec).
+
+## Generate Liquibase Scripts
+In this section the Liquibase scripts will be generated.
+
+### Prompt
+Open the OpenAPI spec and enter the prompt.
+```text
+Based on this openapi spec, generate liquibase migration scripts in XML format
+```
+
+### Response
+The response can be viewed [here](responses/2-generate-liquibase.md).
+
+### Apply Response
+The generated XML Liquibase script is entirely correct. Create in directory `src/main/resources/db/changelog/migration` a file `db.changelog-1.xml` and copy the response into it. Besides that, change the author to `mydeveloperplanet`.
+```xml
+<changeSet id="1" author="mydeveloperplanet">
+```
+
+Run the build.
+
+The build log shows that the tables are generated.
+```shell
+Feb 23, 2025 12:42:59 PM liquibase.changelog
+INFO: Reading resource: src/main/resources/db/changelog/migration/db.changelog-1.xml
+Feb 23, 2025 12:42:59 PM liquibase.changelog
+INFO: Creating database history table with name: public.databasechangelog
+Feb 23, 2025 12:42:59 PM liquibase.changelog
+INFO: Reading from public.databasechangelog
+Feb 23, 2025 12:42:59 PM liquibase.command
+INFO: Using deploymentId: 0310979670
+Feb 23, 2025 12:42:59 PM liquibase.changelog
+INFO: Reading from public.databasechangelog
+Running Changeset: src/main/resources/db/changelog/migration/db.changelog-1.xml::1::yourname
+Feb 23, 2025 12:42:59 PM liquibase.changelog
+INFO: Table customers created
+Feb 23, 2025 12:42:59 PM liquibase.changelog
+```
+
+In directory `target/generated-sources/jooq` you can find the generated jOOQ files which are generated also.
+
+The changes can be viewed [here](https://github.com/mydeveloperplanet/myaicodeprojectplanet/tree/feature/add-liquibase-scripts).
