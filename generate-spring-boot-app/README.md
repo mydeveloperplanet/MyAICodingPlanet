@@ -272,7 +272,8 @@ In this section, the service will be generated.
 ### Prompt
 Open a new chat window and add the full project to the Prompt Context. Enter the prompt.
 ```text
-Create a spring service in order that the operations defined in the openapi spec customers.yaml are supported. The service must use the CustomerRepository.
+Create a spring service in order that the operations defined in the openapi spec customers.yaml are supported. 
+The service must use the CustomerRepository.
 ```
 
 ### Response
@@ -286,3 +287,95 @@ Create package `com/mydeveloperplanet/myaicodeprojectplanet/service` and add the
 Run the build, the build is successful.
 
 The changes can be viewed [here](https://github.com/mydeveloperplanet/myaicodeprojectplanet/tree/feature/add-service).
+
+## Generate Controller
+In this section, the controller will be generated.
+
+### Prompt
+Open a new chat window, add the `src` directory and the `target/generated-sources/openapi/src` directory to the Prompt Context. Enter the prompt.
+```text
+Create a Spring Controller in order that the operations defined in the openapi spec customers.yaml are supported. 
+The controller must implement CustomersApi. 
+The controller must use the CustomersService.
+```
+
+### Response
+The response can be viewed [here](responses/6-1-controller.md).
+
+### Apply Response
+The response looks good. Create the package `com/mydeveloperplanet/myaicodeprojectplanet/controller` and add the controller to this package. Some issues exist:
+* The import for `CustomersApi` is missing, add it.
+* The arguments in the methods use the `Customer` domain model which is not correct. It should use the OpenAPI `Customer` model.
+
+### Prompt
+Enter a follow-up prompt.
+```text
+The interface is not correctly implemented. 
+The interface must use the openapi Customer model and 
+must convert it to the Customer domain model which is used by the service.
+```
+
+### Response
+The response can be viewed [here](responses/6-2-controller.md).
+
+### Apply Response
+The response is not correct. The LLM seems does not seem to see the difference between the `Customer` domain model and the `Customer` OpenAPI model.
+
+There is also a strange non-existing Java syntax in the response.
+```java
+import com.mydeveloperplanet.myaicodeprojectplanet.openapi.model.Customer as OpenAPICustomer;
+```
+
+### Prompt
+Enter a follow-up prompt.
+```text
+This is not correct. 
+Try again, the openai Customer model is available in package com.mydeveloperplanet.myaicodeprojectplanet.openapi.model, 
+the domain model is available in package com.mydeveloperplanet.myaicodeprojectplanet.model
+```
+
+### Response
+The response can be viewed [here](responses/6-3-controller.md).
+
+This response is identical to the previous one.
+
+Let's help the LLM a little bit. Fix the methods and replace `OpenAPICustomer` with `com.mydeveloperplanet.myaicodeprojectplanet.openapi.model.Customer`.
+
+This still raises compile errors, but maybe the LLM can fix this.
+
+### Prompt
+Open a new chat window, add the `src` directory and the `target/generated-sources/openapi/src` directory to the Prompt Context. Enter the prompt.
+```text
+The CustomersController has the following compile errors:
+* customersGet return value is not correct
+* customersIdGet return value is not correct
+Fix this
+```
+
+### Response
+The response can be viewed [here](responses/6-4-controller.md).
+
+### Apply Response
+This seems to be a better solution. Only the following snippet does not compile.
+```java
+private com.mydeveloperplanet.myaicodeprojectplanet.openapi.model.Customer convertToOpenAPIModel(Customer customer) {
+        return new com.mydeveloperplanet.myaicodeprojectplanet.openapi.model.Customer(
+                customer.getId(),
+                customer.getFirstName(),
+                customer.getLastName()
+        );
+    }
+```
+Let's fix this manually.
+```java
+private com.mydeveloperplanet.myaicodeprojectplanet.openapi.model.Customer convertToOpenAPIModel(Customer customer) {
+        com.mydeveloperplanet.myaicodeprojectplanet.openapi.model.Customer openAPICustomer = 
+                new com.mydeveloperplanet.myaicodeprojectplanet.openapi.model.Customer();
+        openAPICustomer.setId(customer.getId());
+        openAPICustomer.setFirstName(customer.getFirstName());
+        openAPICustomer.setLastName(customer.getLastName());
+        return openAPICustomer;
+    }
+```
+
+The changes can be viewed [here](https://github.com/mydeveloperplanet/myaicodeprojectplanet/tree/feature/add-controller).
