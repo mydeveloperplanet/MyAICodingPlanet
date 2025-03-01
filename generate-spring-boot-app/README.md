@@ -263,3 +263,26 @@ This looks great. Some variables, arguments are called `record` and this is a re
 Run the build, the build is successful.
 
 This took a bit longer than the previous generations, but the end result is quite good.
+
+The changes can be viewed [here](https://github.com/mydeveloperplanet/myaicodeprojectplanet/tree/feature/add-repository).
+
+### Generate Service
+In this section, the service will be generated.
+
+### Prompt
+Open a new chat window and add the full project to the Prompt Context. Enter the prompt.
+```text
+Create a spring service in order that the operations defined in the openapi spec customers.yaml are supported. The service must use the CustomerRepository.
+```
+
+### Response
+The response can be viewed [here](responses/5-service.md).
+
+### Apply Response
+The response looks good. Also a Service Interface is created, which is not really needed.
+
+Create package `com/mydeveloperplanet/myaicodeprojectplanet/service` and add the Service class and interface.
+
+Run the build, the build is successful.
+
+The changes can be viewed [here](https://github.com/mydeveloperplanet/myaicodeprojectplanet/tree/feature/add-service).
