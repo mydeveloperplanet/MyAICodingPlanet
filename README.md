@@ -12,6 +12,7 @@ Two different setups are used, in every README the used setup is mentioned.
 
 The corresponding blog posts can be found here:
 * https://mydeveloperplanet.com/2025/02/19/unlocking-ai-coding-assistants-real-world-use-cases-part-1/
+* https://mydeveloperplanet.com/2025/03/05/unlocking-ai-coding-assistants-real-world-use-cases-part-2/
 
 ## Explain Kubernetes Yaml
 
@@ -72,3 +73,7 @@ The corresponding blog posts can be found here:
 ## Generate Test Data
 
 [Generate Test Data](generate-test-data/README.md)
+
+## Generate Spring Boot Application
+
+[Generate Spring Boot Application](generate-spring-boot-app/README.md)
