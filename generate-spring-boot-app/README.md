@@ -359,23 +359,170 @@ The response can be viewed [here](responses/6-4-controller.md).
 This seems to be a better solution. Only the following snippet does not compile.
 ```java
 private com.mydeveloperplanet.myaicodeprojectplanet.openapi.model.Customer convertToOpenAPIModel(Customer customer) {
-        return new com.mydeveloperplanet.myaicodeprojectplanet.openapi.model.Customer(
-                customer.getId(),
-                customer.getFirstName(),
-                customer.getLastName()
-        );
-    }
+    return new com.mydeveloperplanet.myaicodeprojectplanet.openapi.model.Customer(
+            customer.getId(),
+            customer.getFirstName(),
+            customer.getLastName()
+    );
+}
 ```
 Let's fix this manually.
 ```java
 private com.mydeveloperplanet.myaicodeprojectplanet.openapi.model.Customer convertToOpenAPIModel(Customer customer) {
-        com.mydeveloperplanet.myaicodeprojectplanet.openapi.model.Customer openAPICustomer = 
-                new com.mydeveloperplanet.myaicodeprojectplanet.openapi.model.Customer();
-        openAPICustomer.setId(customer.getId());
-        openAPICustomer.setFirstName(customer.getFirstName());
-        openAPICustomer.setLastName(customer.getLastName());
-        return openAPICustomer;
-    }
+    com.mydeveloperplanet.myaicodeprojectplanet.openapi.model.Customer openAPICustomer = 
+            new com.mydeveloperplanet.myaicodeprojectplanet.openapi.model.Customer();
+    openAPICustomer.setId(customer.getId());
+    openAPICustomer.setFirstName(customer.getFirstName());
+    openAPICustomer.setLastName(customer.getLastName());
+    return openAPICustomer;
+}
 ```
 
+Run the build, the build is successful.
+
 The changes can be viewed [here](https://github.com/mydeveloperplanet/myaicodeprojectplanet/tree/feature/add-controller).
+
+## Run Application
+Time to run the application.
+
+Add the following dependency in order to start a PostgreSQL database when running the application.
+```xml
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-docker-compose</artifactId>
+	<scope>runtime</scope>
+	<optional>true</optional>
+</dependency>
+```
+
+Add a `compose.yaml` file to the root of the repository.
+```yaml
+services:
+  postgres:
+    image: 'postgres:17-alpine'
+    environment:
+      - 'POSTGRES_DB=mydatabase'
+      - 'POSTGRES_PASSWORD=secret'
+      - 'POSTGRES_USER=myuser'
+    labels:
+      - "org.springframework.boot.service-connection=postgres"
+    ports:
+      - '5432'
+```
+
+Run the application.
+```shell
+mvn spring-boot:run
+```
+
+An error occurs.
+```shell
+2025-02-23T15:29:27.478+01:00 ERROR 33602 --- [MyAiCodeProjectPlanet] [           main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Liquibase failed to start because no changelog could be found at 'classpath:/db/changelog/db.changelog-master.yaml'.
+
+Action:
+
+Make sure a Liquibase changelog is present at the configured path.
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  19.530 s
+[INFO] Finished at: 2025-02-23T15:29:27+01:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:3.4.3:run (default-cli) on project myaicodeprojectplanet: Process terminated with exit code: 1 -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+```
+
+This can be fixed by adding the following line into the `application.properties` file.
+```properties
+spring.liquibase.change-log=classpath:db/changelog/db.changelog-root.xml
+```
+
+Run the application and now it starts successfully.
+
+The changes can be viewed [here](https://github.com/mydeveloperplanet/myaicodeprojectplanet/tree/feature/run-application).
+
+## Test Application
+The application runs, but is it also functional?
+
+### Prompt
+Open a new chat window and open the OpenAPI specification. Enter the prompt.
+```text
+Generate some curl commands in order to test this openapi spec
+```
+
+### Response
+The response can be viewed [here](responses/7-tests.md).
+
+### Run Tests
+Create a Customer.
+```shell
+$ curl -X POST "http://localhost:8080/customers" -H "Content-Type: application/json" -d '{
+  "firstName": "John",
+  "lastName": "Doe"
+}'
+{"timestamp":"2025-02-23T14:33:11.903+00:00","status":404,"error":"Not Found","path":"/customers"}
+```
+This test fails. The cause is that the `CustomerController` has the following unnecessary annotation.
+```java
+@RequestMapping("/customers")
+```
+This should not be here, this is already part of the `CustomersApi` interface.
+
+Remove this line, build the application and run it again.
+
+Create a Customer. This is successful.
+```shell
+curl -X POST "http://localhost:8080/customers" -H "Content-Type: application/json" -d '{
+  "firstName": "John",
+  "lastName": "Doe"
+}'
+```
+
+Retrieve a Customer. This is successful.
+```shell
+curl -X GET "http://localhost:8080/customers/1" -H "accept: application/json"
+{"id":1,"firstName":"John","lastName":"Doe"}
+```
+
+Update a Customer. This is successful.
+```shell
+curl -X PUT "http://localhost:8080/customers/1" -H "Content-Type: application/json" -d '{
+  "id": 1,
+  "firstName": "Jane",
+  "lastName": "Doe"
+}'
+```
+
+Retrieve all Customers. This is successful.
+```shell
+curl -X GET "http://localhost:8080/customers" -H "accept: application/json"
+[{"id":1,"firstName":"Jane","lastName":"Doe"}]
+```
+
+Delete a Customer. This is successful.
+```shell
+curl -X DELETE "http://localhost:8080/customers/1" -H "accept: application/json"
+```
+
+Retrieve all Customers. An empty list is returned. This is successful.
+```shell
+curl -X GET "http://localhost:8080/customers" -H "accept: application/json"
+[]
+```
+
+## Conclusion
+It is possible to create a Spring Boot application from scratch using a local LLM. Creating the repository and controller needed some extra iterations and manual interventions. However, the result is quite good: the application is functional and meets the initial requirements. 
