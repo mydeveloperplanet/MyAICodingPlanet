@@ -77,3 +77,7 @@ The corresponding blog posts can be found here:
 ## Generate Spring Boot Application
 
 [Generate Spring Boot Application](generate-spring-boot-app/README.md)
+
+## Generate Unit Tests
+
+[Generate Unit Tests](generate-unit-tests/README.md)
