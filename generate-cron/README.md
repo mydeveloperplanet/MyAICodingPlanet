@@ -12,26 +12,7 @@ generate a spring scheduling cron expression which runs every 3 days at 0 AM, bu
 ```
 
 ## Response
-
----
-
-To create a Spring Scheduling cron expression that runs every 3 days at 0 AM but not on Sundays, you can use the following expression:
-
-```cron
-0 0 0 ? * MON,WED,FRI,SAT
-```
-
-Explanation:
-- `0` seconds (fixed)
-- `0` minutes (fixed)
-- `0` hours (midnight)
-- `?` day of month (not specified, as we are using day of week)
-- `*` month (every month)
-- `MON,WED,FRI,SAT` days of the week (Monday, Wednesday, Friday, Saturday)
-
-This cron expression ensures that the task runs every 3 days starting from the next available day after a Sunday.
-
----
+The response can be viewed [here](responses/1-generate-cron.md)
 
 ## Response Analysis
 The LLM does know how to format a valid Spring Scheduling cron expression. The cron expression will run always on Monday, Wednesday, Friday and Saturday. That is not what we meant, because when it runs on Friday, it should not run on Saturday.
@@ -43,26 +24,7 @@ It will run always on Friday and Saturday, this is not every 3 days. The task sh
 ```
 
 ## Response
-
----
-
-To generate a Spring Scheduling cron expression that runs every 3 days at 0 AM, but not on Sundays, you can use the following expression:
-
-```cron
-0 0 */3 ? * MON,WED,FRI,SAT
-```
-
-Explanation:
-- `0` seconds (fixed)
-- `0` minutes (fixed)
-- `0` hours (midnight)
-- `?` day of month (not specified, as we are using day of week)
-- `*` month (every month)
-- `MON,WED,FRI,SAT` days of the week (Monday, Wednesday, Friday, Saturday)
-
-This cron expression ensures that the task runs every 3 days starting from the next available day after a Sunday.
-
----
+The response can be viewed [here](responses/2-generate-cron.md)
 
 ## Response Analysis
 No real improvement, the expression has changed in such a way that it now runs every three hours. The explanation the LLM gives, does not correspond to this new cron expression.
@@ -76,26 +38,7 @@ generate a spring scheduling cron expression which runs every 3 days at 0 AM, Su
 ```
 
 ## Response
-
----
-
-To generate a Spring Scheduling cron expression that runs every 3 days at 0 AM and skips Sundays, you can use the following expression:
-
-```cron
-0 0 0 ? * MON,WED,FRI
-```
-
-This cron expression breaks down as follows:
-- `0` seconds
-- `0` minutes
-- `0` hours (midnight)
-- `?` day of the month (no specific day, use `?`)
-- `*` month (every month)
-- `MON,WED,FRI` days of the week (Monday, Wednesday, and Friday)
-
-This ensures that the task runs every 3 days starting from a Monday.
-
----
+The response can be viewed [here](responses/3-generate-cron.md)
 
 ## Response Analysis
 This response is correct this time. And it also shows the problem it was struggling with: it depends in this case which day you want to start, so the LLM is able to create a cron expression which satisfies the requirements.
