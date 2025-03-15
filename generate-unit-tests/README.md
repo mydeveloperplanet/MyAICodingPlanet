@@ -332,7 +332,7 @@ Run the tests, all are successful.
 This is an integration test and mutation tests do no go well with integration tests. However, just give it a try and you can see that the mutation test result shows a 94% line coverage (the `RuntimeException`s are not tested) and an 100% mutation coverage for the repository package. The tests can be improved, but this initial result is already very good.
 ![mutation test repository results](mutationtest/3-repository-pitest-result.png)
 
-### Generate Integration Test
+## Generate Integration Test
 Let's create an integration test for the Spring Boot application.
 
 ### Prompt
