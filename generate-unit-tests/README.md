@@ -120,12 +120,13 @@ The response can be viewed [here](responses/2-1-service-test.md)
 ### Apply Response
 Create package `com.mydeveloperplanet.myaicodeprojectplanet.service` in directory `src/test/java` and copy the response in file `CustomerServiceImplTest`.
 
-Some issues exist"
+Some issues exist:
 * You need to fix some imports.
 * Some compile errors exist when creating a `Customer`. The constructor needs an id, a first name and a last name.
 * The `setUp` method is not really required if you annotate the class with `@ExtendWith(MockitoExtension.class)`
 
 ### Prompt
+Let's see if it makes a difference if the full project is added to the Prompt Context.
 Open a new chat window and add the full project to the Prompt Context. Enter the prompt.
 ```text
 Write a unit test for class CustomerServiceImpl using JUnit.
@@ -141,7 +142,7 @@ This did not change much. Less imports were present, but the same problem with t
 
 Fix this manually and run the tests.
 
-Three tests pass, two fail
+Three tests pass, two fail.
 
 Test `testCreateCustomer` fails due to the following error:
 ```shell
@@ -250,7 +251,7 @@ The response can be viewed [here](responses/3-1-repository-test.md).
 ### Apply Response
 Create package `com.mydeveloperplanet.myaicodeprojectplanet.repository` in directory `src/test/java` and copy the response in file `CustomerRepositoryTest`.
 
-Add dependencies for Testcontainers to the pom
+Add dependencies for Testcontainers to the pom:
 ```xml
 <dependency>
   <groupId>org.testcontainers</groupId>
@@ -294,7 +295,7 @@ And to replace the testcontainer setup as follows.
 public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest");
 ```
 
-When running these test, only the `createCustomer` test is successful. All others fail because the tests assume certain data is in the database.
+When running these tests, only the `createCustomer` test is successful. All other tests fail because the tests assume certain data is in the database.
 
 ### Prompt
 Open a new chat window, open the `CustomerRepositoryTest` and enter the prompt.
@@ -397,7 +398,7 @@ public void testCustomersGet() {
             });
 }
 ```
-And for `testCustomersIdGet`
+And for `testCustomersIdGet`.
 ```java
 @Test
 public void testCustomersIdGet() {
@@ -418,7 +419,7 @@ public void testCustomersIdGet() {
 ```
 Also add Testcontainers and the `setUp` and `tearDown` methods, just like in the `CustomerRepositoryTest`.
 
-Run the tests. All test succeed except `testCustomersIdGet` and `testCustomersGet`. This is due to the fact that it is assumed that the inserted data in the `setUp` method contains an ID equal to 1. This is not true.
+Run the tests. All tests succeed except `testCustomersIdGet` and `testCustomersGet`. This is due to the fact that it is assumed that the inserted data in the `setUp` method contains an ID equal to 1. This is not true.
 Fix this manually by storing the id in a variable `insertedId` and fix the tests accordingly.
 
 Another thing which is not entirely correct is the use of `com.mydeveloperplanet.myaicodeprojectplanet.model.Customer` instead of `com.mydeveloperplanet.myaicodeprojectplanet.openapi.model.Customer`. Also fix this manually.
@@ -431,7 +432,7 @@ And the test should run at a random port.
 Run the tests, all are successful. They probably can be improved, but the skeleton is correct.
 
 ### Test Quality
-The overall test quality did not improve much, but this ia not the goal of the integration test.
+The overall test quality did not improve much, but this is not the goal of the integration test.
 ![mutation integration test result](mutationtest/4-integration-pitest-result.png)
 
 ## Conclusion
