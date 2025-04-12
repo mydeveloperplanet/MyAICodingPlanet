@@ -15,6 +15,7 @@ The corresponding blog posts can be found here:
 * https://mydeveloperplanet.com/2025/03/05/unlocking-ai-coding-assistants-real-world-use-cases-part-2/
 * https://mydeveloperplanet.com/2025/03/19/unlocking-ai-coding-assistants-real-world-use-cases-part-3/
 * https://mydeveloperplanet.com/2025/04/02/unlocking-ai-coding-assistants-generate-spring-boot-application/
+* https://mydeveloperplanet.com/2025/04/16/unlocking-ai-coding-assistants-generate-unit-tests/
 
 ## Explain Kubernetes Yaml
 
